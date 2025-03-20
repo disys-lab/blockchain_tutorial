@@ -1,0 +1,123 @@
+services:
+  test-smartcontracts:
+    image: pramanan3/smartcontract_test:latest
+    network_mode: "host"
+    working_dir: /home/test_smartcontracts/
+    volumes:
+      - ../../test_smartcontracts:/home/test_smartcontracts
+
+  qbft-configure-genesis:
+    image: hyperledger/besu:latest
+    volumes:
+      - .:/var/tmp/QBFT-Network
+    working_dir: /var/tmp/QBFT-Network
+    entrypoint: ["besu"]
+    command:
+      - operator
+      - generate-blockchain-config
+      - --config-file=/var/tmp/QBFT-Network/qbftConfigFile.json
+      - --to=/var/tmp/QBFT-Network/networkFiles/
+      - --private-key-file-name=key
+
+    healthcheck:
+      test: [ "CMD", "test", "-f", "/var/tmp/QBFT-Network/networkFiles/genesis.json" ]
+      interval: 5s
+      retries: 3
+      start_period: 5s
+      timeout: 3s
+
+  move-keys:
+    image: alpine:3.19.0
+    volumes:
+      - .:/var/tmp/QBFT-Network/
+    working_dir: /var/tmp/QBFT-Network/
+    command:
+      - sh
+      - -c
+      - |
+        mkdir -p ./Node1/data/
+        find ./networkFiles/keys/* -type f -exec mv {} ./Node1/data/ \;
+
+  clean-data:
+    image: alpine:3.19.0
+    volumes:
+      - .:/var/tmp/QBFT-Network/
+    working_dir: /var/tmp/QBFT-Network/
+    command:
+      - sh
+      - -c
+      - |
+        ./clean.sh
+
+  qbft-launch-bootnode1:
+    image: hyperledger/besu:latest
+    network_mode: "host"
+    volumes:
+      - .:/var/tmp/QBFT-Network
+    working_dir: /var/tmp/QBFT-Network/Node1/
+    command:
+      - --data-path=/var/tmp/QBFT-Network/Node1/data/
+      - --genesis-file=../networkFiles/genesis.json
+      - --rpc-http-enabled
+      - --p2p-host=127.0.0.1
+      - --rpc-http-api=ETH,NET,QBFT,WEB3,ADMIN
+      - --host-allowlist="*"
+      - --rpc-http-cors-origins="all"
+      - --profile=ENTERPRISE
+
+  qbft-launch-node2:
+    image: hyperledger/besu:latest
+    network_mode: "host"
+    volumes:
+      - .:/var/tmp/QBFT-Network
+    working_dir: /var/tmp/QBFT-Network/Node2/
+    command:
+      - --data-path=/var/tmp/QBFT-Network/Node2/data/
+      - --genesis-file=../networkFiles/genesis.json
+      - --bootnodes=enode://1fb4c1a1b13b4cfe42dd610ccab692a216a5d332150dddf735113007df56413ff62f5832f5f8e8e7a496bc55f9a53d213578b1dfee373aa72540aecfa697c162@127.0.0.1:30303
+      - --p2p-host=127.0.0.1
+      - --p2p-port=30304
+      - --rpc-http-port=8546
+      - --rpc-http-enabled
+      - --rpc-http-api=ETH,NET,QBFT,WEB3,ADMIN
+      - --host-allowlist="*"
+      - --rpc-http-cors-origins="all"
+      - --profile=ENTERPRISE
+
+  qbft-launch-node3:
+    image: hyperledger/besu:latest
+    network_mode: "host"
+    volumes:
+      - .:/var/tmp/QBFT-Network
+    working_dir: /var/tmp/QBFT-Network/Node3/
+    command:
+      - --data-path=/var/tmp/QBFT-Network/Node3/data/
+      - --genesis-file=../networkFiles/genesis.json
+      - --bootnodes=enode://1fb4c1a1b13b4cfe42dd610ccab692a216a5d332150dddf735113007df56413ff62f5832f5f8e8e7a496bc55f9a53d213578b1dfee373aa72540aecfa697c162@127.0.0.1:30303
+      - --p2p-host=127.0.0.1
+      - --p2p-port=30305
+      - --rpc-http-port=8547
+      - --rpc-http-enabled
+      - --rpc-http-api=ETH,NET,QBFT,WEB3,ADMIN
+      - --host-allowlist="*"
+      - --rpc-http-cors-origins="all"
+      - --profile=ENTERPRISE
+
+  qbft-launch-node4:
+    image: hyperledger/besu:latest
+    network_mode: "host"
+    volumes:
+      - .:/var/tmp/QBFT-Network
+    working_dir: /var/tmp/QBFT-Network/Node4/
+    command:
+      - --data-path=/var/tmp/QBFT-Network/Node4/data/
+      - --genesis-file=../networkFiles/genesis.json
+      - --bootnodes=enode://1fb4c1a1b13b4cfe42dd610ccab692a216a5d332150dddf735113007df56413ff62f5832f5f8e8e7a496bc55f9a53d213578b1dfee373aa72540aecfa697c162@127.0.0.1:30303
+      - --p2p-host=127.0.0.1
+      - --p2p-port=30306
+      - --rpc-http-port=8548
+      - --rpc-http-enabled
+      - --rpc-http-api=ETH,NET,QBFT,WEB3,ADMIN
+      - --host-allowlist="*"
+      - --rpc-http-cors-origins="all"
+      - --profile=ENTERPRISE
