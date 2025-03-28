@@ -47,7 +47,7 @@ QBFT-Network/
 │   │    ├── key.pub
 
 
-Now run `docker compose up qbft-launch-bootnode1 -d` to launch the blockchain node. You should observe an output that constantly mints blocks somewhat like this:
+Now run `docker compose up qbft-launch-bootnode1` to launch the blockchain node. You should observe an output that constantly mints blocks somewhat like this:
 ```commandline
 ....
 qbft-launch-bootnode1-1  | 2025-03-20 03:05:48.491+00:00 | main | INFO  | FullSyncTargetManager | Unable to find sync target. Waiting for 1 peers minimum. Currently checking 0 peers for usefulness
@@ -86,7 +86,7 @@ This means that you have been able to deploy a SmartContract on your blockchain 
 
 After you have launched bootnode1, go ahead and obtain its node address. The node address is a unique hexadeciman string that serves as an address of the blockchain node.
 To obtain the node address, execute the following command:
-`docker compose up bootnode-address`
+`docker exec -it qbft-network-test-smartcontracts-1 bash -c "python find_enode_address.py localhost 8545"`
 
 This should give you an output of:
 ```commandline

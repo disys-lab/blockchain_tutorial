@@ -74,7 +74,7 @@ services:
     command:
       - --data-path=/var/tmp/QBFT-Network/Node2/data/
       - --genesis-file=../networkFiles/genesis.json
-      - --bootnodes=enode://1fb4c1a1b13b4cfe42dd610ccab692a216a5d332150dddf735113007df56413ff62f5832f5f8e8e7a496bc55f9a53d213578b1dfee373aa72540aecfa697c162@127.0.0.1:30303
+      - --bootnodes=enode://519533a9da5c93c8f499e83e206fdf7f0ac058336b1da722ae780455f0d75efc22ab8afcdcc9fcdb5f7670641924856655f3c89282fcc9f84008d705d7111b63@127.0.0.1:30303
       - --p2p-host=127.0.0.1
       - --p2p-port=30304
       - --rpc-http-port=8546
