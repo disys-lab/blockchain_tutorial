@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  ipfs-node:
+    image: "ipfs/go-ipfs"
+    environment:
+      LIBP2P_FORCE_PNET: "1"
+      IPFS_SWARM_KEY: |
+        /key/swarm/psk/1.0.0/
+        /base16/
+        76acbaacdcc35520c4b9fe8e87e32f45f3405d4208c8b58bd29a55fadee5e922
+    networks:
+      - nebula
+    volumes:
+      - /tmp/:/tmp/1
+      - /var/tmp/:/var/tmp/1:rw
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+    restart: always
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+    privileged: false
+
+networks:
+  nebula:
+    driver: bridge

@@ -132,6 +132,6 @@ if __name__ == "__main__":
     contract = web3.eth.contract(address=contract_address, abi=abi)
     get_message(contract)
 
-    set_message("Hello to you too!", contract, private_key, public_key)
+    set_message("Hello to you too from Node2!", contract, private_key, public_key)
 
     get_message(contract)
