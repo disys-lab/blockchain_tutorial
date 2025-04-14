@@ -3,6 +3,7 @@ import ipfshttpclient
 
 # Local IPFS API endpoint
 IPFS_API = "http://127.0.0.1:5001/api/v0"
+IPFS_HTTP = "http://127.0.0.1:8080/ipfs/"
 
 def add_text_to_ipfs(text):
     files = {
@@ -22,6 +23,6 @@ if __name__ == "__main__":
     ipfs_hash = add_text_to_ipfs(hello_string)
     print(f"Added! IPFS Hash: {ipfs_hash}")
 
-    print("\nRetrieving text from IPFS...")
-    retrieved = get_text_from_ipfs(ipfs_hash)
-    print(f"Retrieved: {retrieved}")
+    #print("\nRetrieving text from IPFS...")
+    #retrieved = get_text_from_ipfs(ipfs_hash)
+    #print(f"Retrieved: {retrieved}")
