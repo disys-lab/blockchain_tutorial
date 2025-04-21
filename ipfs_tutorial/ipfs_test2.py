@@ -1,4 +1,4 @@
-import requests, ipfshttpclient, pickle
+import requests, pickle
 import numpy as np
 
 # Local IPFS API endpoint
