@@ -23,6 +23,3 @@ if __name__ == "__main__":
     ipfs_hash = add_text_to_ipfs(hello_string)
     print(f"Added! IPFS Hash: {ipfs_hash}")
 
-    #print("\nRetrieving text from IPFS...")
-    #retrieved = get_text_from_ipfs(ipfs_hash)
-    #print(f"Retrieved: {retrieved}")

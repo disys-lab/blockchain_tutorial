@@ -37,13 +37,13 @@ def IPFS_addPeer(peernode, ip, port, protocol="http"):
 
 if __name__ == "__main__":
     #replace this with your existing ip
-    localIP = "10.227.85.9"
+    localIP = "127.0.0.1"
     localIPFS_rest_port = "5001"
     localIPFS_disc_port = "4001"
     ipfs_address = IPFS_findNodeID(localIP,localIPFS_rest_port,localIPFS_disc_port)
     print(ipfs_address)
 
-    node2_IP = "10.227.85.9"
+    node2_IP = "127.0.0.1"
     node2_rest_port = "5002"
     return_val = IPFS_addPeer(ipfs_address, node2_IP, node2_rest_port)
     print(return_val)
