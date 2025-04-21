@@ -161,3 +161,12 @@ We can now extend our network across multiple computers by following the same lo
 - Bootnode has to be the same as bootnode1. Alternatively, they can also be one of the nodes spawned above (i.e. node2, node3 or node4 etc.). You would need to acquire the node address for each.
 - The ports RPC-Port and P2P-Port must be free and available to use on the local machine.
 - Extend the same `docker-compose.yml` file with the new configuration depending on which other computer you want to onboard.
+
+
+Node address 0x750adabfbd90769a442a34a7a06ef97b01034dd1
+
+Mohai Node: 0xe23bbd8eae00b0bd0e41bd5bde551a23d2e9c880
+
+Lucius Node: 0xd1eaa261df19f8adad634dded3c5a4cb0eefbe4b
+
+Boris Node: 0x2bfb17ce50b1fc3718c8c88f3ec98798fcd42b8b

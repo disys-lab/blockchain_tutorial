@@ -59,7 +59,7 @@ services:
       - --data-path=/var/tmp/QBFT-Network/Node1/data/
       - --genesis-file=../networkFiles/genesis.json
       - --rpc-http-enabled
-      - --p2p-host=127.0.0.1
+      - --p2p-host=10.227.86.209
       - --rpc-http-api=ETH,NET,QBFT,WEB3,ADMIN
       - --host-allowlist="*"
       - --rpc-http-cors-origins="all"
@@ -74,7 +74,7 @@ services:
     command:
       - --data-path=/var/tmp/QBFT-Network/Node2/data/
       - --genesis-file=../networkFiles/genesis.json
-      - --bootnodes=enode://519533a9da5c93c8f499e83e206fdf7f0ac058336b1da722ae780455f0d75efc22ab8afcdcc9fcdb5f7670641924856655f3c89282fcc9f84008d705d7111b63@127.0.0.1:30303
+      - --bootnodes=enode://f48ee2c02d362e3bfcda36090c42939c205bb94256107f1df55a097d93bcb1a08fe7f5657efc19cbc2751758ded6566394f04e9f92483026af5951efc69e21f1@10.227.85.9:30303
       - --p2p-host=127.0.0.1
       - --p2p-port=30304
       - --rpc-http-port=8546
@@ -121,3 +121,30 @@ services:
       - --host-allowlist="*"
       - --rpc-http-cors-origins="all"
       - --profile=ENTERPRISE
+
+
+  ipfs-node1:
+    image: "ipfs/go-ipfs"
+    environment:
+      LIBP2P_FORCE_PNET: "1"
+      IPFS_SWARM_KEY: |
+        /key/swarm/psk/1.0.0/
+        /base16/
+        76acbaacdcc35520c4b9fe8e87e32f45f3405d4208c8b58bd29a55fadee5e922
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+
+  ipfs-node2:
+    image: "ipfs/go-ipfs"
+    environment:
+      LIBP2P_FORCE_PNET: "1"
+      IPFS_SWARM_KEY: |
+        /key/swarm/psk/1.0.0/
+        /base16/
+        76acbaacdcc35520c4b9fe8e87e32f45f3405d4208c8b58bd29a55fadee5e922
+    ports:
+      - "4002:4001"
+      - "5002:5001"
+      - "8081:8080"
