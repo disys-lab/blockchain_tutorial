@@ -1,0 +1,5 @@
+docker exec -it qbft-network-test-smartcontracts-1 bash -c "python add_peer.py 8545 enode://c37ed0da50c699a50e1983bbf11c6c8a2d89cdfcc289404be44d8cd247de9189ab9d4bb78eb338c233ac56fcdd008e61c68cb200ee625bbbba73b9fc03141203@10.227.84.117:30303"
+
+
+docker compose up clean-data
+docker compose up qbft-launch-node2

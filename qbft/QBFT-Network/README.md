@@ -1,13 +1,14 @@
-## Genesis Configuration and Environment setup
+# Multi Node QBFT Blockchain Network and Solidity SmartContract Deployment
 
-
+### Genesis Configuration and Environment setup
 
 File structure must be 
+```
 QBFT-Network/
 ├── qbftConfigFile.json
 ├── docker-compose.yml
 ├── clean.sh
-
+```
 After running ` docker compose up qbft-configure-genesis`. 
 Output must look like:
 ```commandline
@@ -23,6 +24,7 @@ qbft-configure-genesis-1 exited with code 0
 ```
 
 You must get the following structure
+```
 QBFT-Network/
 ├── qbftConfigFile.json
 ├── docker-compose.yml
@@ -31,8 +33,10 @@ QBFT-Network/
 │     ├── data
 │         ├── keys
 │             ├── <public-key-file (like 0xf7224f3aae8f9e1d0d082dd5ecae992e916e9686)>
+```
 
 Now run ` docker compose up move-keys`, you will now get
+```
 QBFT-Network/
 ├── qbftConfigFile.json
 ├── docker-compose.yml
@@ -45,7 +49,7 @@ QBFT-Network/
 │   ├── data
 │   │    ├── key
 │   │    ├── key.pub
-
+```
 
 Now run `docker compose up qbft-launch-bootnode1` to launch the blockchain node. You should observe an output that constantly mints blocks somewhat like this:
 ```commandline
@@ -82,7 +86,7 @@ Current Message: Hello to you too!
 This means that you have been able to deploy a SmartContract on your blockchain using the bootnode.
 
 
-## Creating and testing a Blockchain network
+## Creating and testing a Blockchain network locally
 
 After you have launched bootnode1, go ahead and obtain its node address. The node address is a unique hexadeciman string that serves as an address of the blockchain node.
 To obtain the node address, execute the following command:
@@ -163,10 +167,62 @@ We can now extend our network across multiple computers by following the same lo
 - Extend the same `docker-compose.yml` file with the new configuration depending on which other computer you want to onboard.
 
 
-Node address 0x750adabfbd90769a442a34a7a06ef97b01034dd1
+## Creating and testing a Blockchain network across two or more separate physical machines
+This section assumes that some other physical machine has successfully setup the bootnode.
+the objective here to create a blockchain network across two nodes. In this case you would need the following from whoever is running the bootnode
+- **Bootnode Enode Address**:  You would need the enode address of the bootnode. This must be something that looks like this:
+  `enode://c4d889b6c7953e3e3348d187cc33f8d0ce3ea1ab87fa36b25e9eaa11db1feedd6e42947f519edbb8af57855fb7894e1889969ab7116a007138744ce8ac638dc4@10.227.82.47:30303`
+  Make sure at the end, it contains "IP_Address:30303", where IP address is their IP address.
+- **genesis.json**: Their original `genesis.json` file located in `qbft/QBFT-Network/networkFiles/genesis.json`. Once
+  you obtain it, make sure that you place it inside your own `qbft/QBFT-Network/networkFiles/` directory.
+  If a directory doesnt exist locally, you can go ahead and create one.
 
-Mohai Node: 0xe23bbd8eae00b0bd0e41bd5bde551a23d2e9c880
+### Bringing up test_smartcontracts container before launching Node 2
+The Python code for adding peer nodes such as the boot node as well as for deploying SmartContracts is located within the
+`pramanan3/test_smartcontracts:latest` container image.
+To run this container, you can simply run this command: `docker compose up test-smartcontracts -d`. 
+You should be able to see in Docker Desktop that a container called `test-smartcontracts` is up and running. 
 
-Lucius Node: 0xd1eaa261df19f8adad634dded3c5a4cb0eefbe4b
+### Launching Node 2
+To launch Node2, you need to edit the key pertaining to `qbft-launch-node2` in `docker_compose.yml`.
+In the `docker-compose.yml` file, ensure the following fields are correct:
+* Make sure that `--bootnodes=` is set to the enode address supplied by the operator of bootnode1.
+* Set the `--p2p-host=` as your own IP address.
 
-Boris Node: 0x2bfb17ce50b1fc3718c8c88f3ec98798fcd42b8b
+Now run the following command `docker compose up qbft-launch-node2 -d`. The `-d` suffix is optional if you want to run 
+the launch node as a daemon.
+
+Assuming youre running `qbft-launch-node2` with `-d` option, proceed to add the bootnode explictly using:
+`docker exec -it qbft-network-test-smartcontracts-1 bash -c "python add_peer.py 8546 enode://<bootnode_enode_addr>@<bootnode_ip>:30303`
+
+This should give you an output that looks something like this:
+```commandline
+Peer added: {'jsonrpc': '2.0', 'id': 0, 'result': True}
+Current Peers: []
+```
+Feel free to run this multiple times if the `result` is false.
+
+### Testing Pre-Deployed SmartContracts
+If the bootnode owner has already deployed a SmartContract that you wish to use, youd need to following:
+- `abi.json`
+- `compiled_code.json`
+- `contract_address.json`
+
+If the bootnode owner had successfully deployed their SC, these files can be found within the `test_smartcontracts` directory. 
+In your own folder make sure you place these files within your own `test_smartcontracts` directory.
+
+Once youve placed these files directly, run the following command.
+`docker exec -it qbft-network-test-smartcontracts-1 bash -c "python compile_SC_qbft.py 0 8546"`
+
+The success of this command depends on whether youve been able to add yourself successfully as a peer of bootnode1.
+
+When you run the command, you should see something like this:
+
+```
+contract_address:0x10626FA93259c3C0b6f609ebc354dEa734Cb6d9a
+Current Message: Hello to you too from Node2!
+Updating message... Tx Hash: 6777503d24393a5644a5de4909e4f67b4c9cd5eeb1ad7a182df72e8714725d0d
+Current Message: Hello to you too from Node2!
+```
+
+

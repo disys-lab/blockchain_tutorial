@@ -96,7 +96,7 @@ class IPFS_MNISTTrainer:
 
             #load weights from IPFS for every epoch
             print(f"load weights from epoch {epoch}")
-            #self.pullFromIPFS_WithSC(model, self.public_key)
+            self.pullFromIPFS_WithSC(model, self.public_key)
 
             total_loss = 0
             for images, labels in self.train_loader:
@@ -112,7 +112,7 @@ class IPFS_MNISTTrainer:
 
             print(f"Epoch {epoch}, Loss: {total_loss:.4f}")
 
-            #self.pushToIPFS_WithSC(model,self.public_key)
+            self.pushToIPFS_WithSC(model,self.public_key)
 
 
     #to test the output

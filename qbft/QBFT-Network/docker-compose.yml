@@ -5,6 +5,7 @@ services:
     working_dir: /home/test_smartcontracts/
     volumes:
       - ../../test_smartcontracts:/home/test_smartcontracts
+      - /Users/pramanan3/Downloads/assignment3_submissions:/home/a3sub
 
   qbft-configure-genesis:
     image: hyperledger/besu:latest
@@ -59,7 +60,7 @@ services:
       - --data-path=/var/tmp/QBFT-Network/Node1/data/
       - --genesis-file=../networkFiles/genesis.json
       - --rpc-http-enabled
-      - --p2p-host=10.227.86.209
+      - --p2p-host=10.227.84.117
       - --rpc-http-api=ETH,NET,QBFT,WEB3,ADMIN
       - --host-allowlist="*"
       - --rpc-http-cors-origins="all"
@@ -69,13 +70,13 @@ services:
     image: hyperledger/besu:latest
     network_mode: "host"
     volumes:
-      - .:/var/tmp/QBFT-Network
+      - .:/var/tmp/QBFT-Network:rw
     working_dir: /var/tmp/QBFT-Network/Node2/
     command:
       - --data-path=/var/tmp/QBFT-Network/Node2/data/
       - --genesis-file=../networkFiles/genesis.json
-      - --bootnodes=enode://f48ee2c02d362e3bfcda36090c42939c205bb94256107f1df55a097d93bcb1a08fe7f5657efc19cbc2751758ded6566394f04e9f92483026af5951efc69e21f1@10.227.85.9:30303
-      - --p2p-host=127.0.0.1
+      - --bootnodes=enode://c4d889b6c7953e3e3348d187cc33f8d0ce3ea1ab87fa36b25e9eaa11db1feedd6e42947f519edbb8af57855fb7894e1889969ab7116a007138744ce8ac638dc4@10.227.82.47:30303
+      - --p2p-host=10.227.82.47
       - --p2p-port=30304
       - --rpc-http-port=8546
       - --rpc-http-enabled
