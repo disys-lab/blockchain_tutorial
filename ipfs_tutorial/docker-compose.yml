@@ -25,6 +25,8 @@ services:
         /key/swarm/psk/1.0.0/
         /base16/
         76acbaacdcc35520c4b9fe8e87e32f45f3405d4208c8b58bd29a55fadee5e922
+    volumes:
+      - ./ipfs-init.sh:/container-init.d/001-autoconf.sh
     ports:
       - "4002:4001"
       - "5003:5001"
