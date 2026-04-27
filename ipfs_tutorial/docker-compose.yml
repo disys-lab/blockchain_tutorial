@@ -2,20 +2,23 @@ version: '3.8'
 
 services:
   ipfs-node1:
-    image: "ipfs/go-ipfs"
+    image: "ipfs/kubo"
     environment:
+      IPFS_PATH: /data/ipfs
       LIBP2P_FORCE_PNET: "1"
       IPFS_SWARM_KEY: |
         /key/swarm/psk/1.0.0/
         /base16/
         76acbaacdcc35520c4b9fe8e87e32f45f3405d4208c8b58bd29a55fadee5e922
+    volumes:
+      - ./ipfs-init.sh:/container-init.d/001-autoconf.sh
     ports:
       - "4001:4001"
-      - "5001:5001"
-      - "8080:8080"
+      - "5002:5001"
+      - "8082:8080"
 
   ipfs-node2:
-    image: "ipfs/go-ipfs"
+    image: "ipfs/kubo"
     environment:
       LIBP2P_FORCE_PNET: "1"
       IPFS_SWARM_KEY: |
@@ -24,5 +27,5 @@ services:
         76acbaacdcc35520c4b9fe8e87e32f45f3405d4208c8b58bd29a55fadee5e922
     ports:
       - "4002:4001"
-      - "5002:5001"
-      - "8081:8080"
+      - "5003:5001"
+      - "8083:8080"
